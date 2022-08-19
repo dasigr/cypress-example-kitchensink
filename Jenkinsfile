@@ -37,8 +37,13 @@ pipeline {
   agent {
     // this image provides everything needed to run Cypress
     docker {
-      image 'cypress/base:10'
+      image 'cypress/base:16.14.2'
     }
+  }
+  
+  environment {
+    HOME = "${env.WORKSPACE}"
+    npm_config_cache = 'npm-cache'
   }
 
   stages {
