@@ -51,7 +51,7 @@ pipeline {
 
   stages {
     // first stage installs node dependencies and Cypress binary
-    stage('build') {
+    stage('Build') {
       steps {
         // there a few default environment variables on Jenkins
         // on local Jenkins machine (assuming port 8080) see
@@ -62,7 +62,7 @@ pipeline {
       }
     }
 
-    stage('start local server') {
+    stage('Start Local Server') {
       steps {
         // start local server in the background
         // we will shut it down in "post" command block
@@ -72,7 +72,7 @@ pipeline {
 
     // this stage runs end-to-end tests, and each agent uses the workspace
     // from the previous stage
-    stage('cypress parallel tests') {
+    stage('Run Parallel Tests') {
       environment {
         // we will be recording test results and video on Cypress dashboard
         // to record we need to set an environment variable
@@ -88,7 +88,7 @@ pipeline {
       parallel {
         // start several test jobs in parallel, and they all
         // will use Cypress Dashboard to load balance any found spec files
-        stage('tester A') {
+        stage('Tester A') {
           steps {
             echo "Running build ${env.BUILD_ID}"
             sh "npm run e2e:record:parallel"
@@ -96,21 +96,20 @@ pipeline {
         }
 
         // second tester runs the same command
-        stage('tester B') {
+        stage('Tester B') {
           steps {
             echo "Running build ${env.BUILD_ID}"
             sh "npm run e2e:record:parallel"
           }
         }
       }
-
     }
   }
 
   post {
     // shutdown the server running in the background
     always {
-      echo 'Stopping local server'
+      echo 'Stopping Local Server'
       // @todo: Kill http server.
       // sh 'pkill -f http-server'
     }
