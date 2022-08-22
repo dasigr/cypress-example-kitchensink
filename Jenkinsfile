@@ -35,10 +35,13 @@
 
 pipeline {
   agent {
-    // this image provides everything needed to run Cypress
     docker {
       image 'cypress/base:16.14.2'
     }
+  }
+  
+  options {
+    ansiColor('xterm')
   }
   
   environment {
